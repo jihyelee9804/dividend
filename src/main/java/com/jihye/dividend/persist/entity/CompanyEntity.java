@@ -1,5 +1,6 @@
 package com.jihye.dividend.persist.entity;
 
+import com.jihye.dividend.model.Company;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -18,4 +19,10 @@ public class CompanyEntity {
     @Column(unique = true) // 중복되지 않는다.
     private String ticker;
     private String name;
+
+    // Company 인스턴스를 CompanyEntity 인스턴스로 변환한다.
+    public CompanyEntity(Company company) {
+        this.ticker = company.getTicker();
+        this.name = company.getName();
+    }
 }

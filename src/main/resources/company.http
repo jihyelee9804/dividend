@@ -1,0 +1,23 @@
+### save company dividend info
+POST http://localhost:8080/company
+Content-Type: application/json
+
+{
+  "ticker" : "coke"
+}
+
+### save company dividend info
+POST http://localhost:8080/company
+Content-Type: application/json
+
+{
+  "ticker" : "MMM"
+}
+
+### get company list
+GET http://localhost:8080/company
+Accept: application/json
+
+### get company dividends
+GET http://localhost:8080/finance/dividend/Coca-Cola Consolidated, Inc.
+Accept: application/json

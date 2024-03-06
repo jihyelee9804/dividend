@@ -9,6 +9,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -16,14 +17,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 배당금 정보를 스크래핑하는 클래스
+ * 회사 메타정보 및 배당금 정보를 스크래핑하는 클래스
  * @return : ScrapedResult (멤버변수: 회사명, 배당금 정보 리스트)
  */
+@Component // YahooFinanceScraper를 빈으로 등록한다.
 public class YahooFinaceScraper implements Scraper{
     // Yahoo Finance 사이트 url을 상수로 저장한다. 문자열 포맷스트링값은 company, startTime, endTime (배당금 정보 관련 날짜값)
     private static final String STATISTICS_URL = "https://finance.yahoo.com/quote/%s/history?period1=%d&period2=%d&interval=1mo";
     private static final String SUMMARY_URL = "https://finance.yahoo.com/quote/%s?p=%s";
     private static final long START_TIME = 86400; // 60 * 60 * 24, 시작날짜 고정값
+
+    // 회사의 배당금 정보를 스크래핑
     @Override
     public ScrapedResult scrap(Company company) {
         // 최종적으로 리턴할 ScrapedResult 객체 생성
@@ -83,22 +87,28 @@ public class YahooFinaceScraper implements Scraper{
     return scrapResult;
     }
 
-    // ticker로 회사의 메타정보를 반환
+    // 회사의 메타정보를 스크래핑
     @Override
     public Company scrapCompanyByTicker(String ticker) {
         String url = String.format(SUMMARY_URL, ticker, ticker);
-        Document document = null;
         try {
-            document = Jsoup.connect(url).get();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            Document document = null;
+            try {
+                document = Jsoup.connect(url).get();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Element titleEle = document.getElementsByTag("h1").get(0);
+            // 문자열 후처리
+            String title = titleEle.text().split(" - ")[1].trim();
+            return Company.builder()
+                    .ticker(ticker)
+                    .name(title)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        Element titleEle = document.getElementsByTag("h1").get(0);
-        // 문자열 후처리
-        String title = titleEle.text().split(" - ")[1].trim();
-        return Company.builder()
-                .ticker(ticker)
-                .name(title)
-                .build();
+        // ticker에 해당하는 Company가 없으면 null을 반환한다.
+        return null;
     }
 }

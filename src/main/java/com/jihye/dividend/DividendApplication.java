@@ -17,12 +17,7 @@ import java.io.IOException;
 public class DividendApplication {
 
     public static void main(String[] args) throws IOException {
-//        SpringApplication.run(DividendApplication.class, args);
-        YahooFinaceScraper scraper = new YahooFinaceScraper();
-//        ScrapedResult result = scraper.scrap(Company.builder().ticker("0").name("coke").build());
-        var result = scraper.scrapCompanyByTicker("MMM");
-        System.out.println(result);
-    }
-
+        SpringApplication.run(DividendApplication.class, args);
 
     }
+}
