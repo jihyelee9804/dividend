@@ -10,16 +10,18 @@ import com.jihye.dividend.persist.entity.DividendEntity;
 import com.jihye.dividend.scraper.Scraper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-
+import org.apache.commons.collections4.Trie;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+@Service // 싱글톤으로 관리된다.
 @AllArgsConstructor
 public class CompanyService {
+    private final Trie trie;
     private final Scraper yahooFinanceScraper;
 
     private final CompanyRepository companyRepository;
@@ -54,5 +56,31 @@ public class CompanyService {
                 .collect(Collectors.toList());
         this.dividendRepository.saveAll(dividendEntityList);
         return null;
+    }
+
+    // 자동완성 - 키워드 추가
+    public void addAutocompleteKeyword(String keyword) {
+        this.trie.put(keyword, null);
+    }
+
+    // 자동완성 - 회사명 리스트 조회
+    public List<String> autocomplete(String keyword) {
+        return (List<String>) this.trie.prefixMap(keyword).keySet()
+                .stream()
+                .limit(10)
+                .collect(Collectors.toList());
+    }
+
+    // 자동완성 - 키워드 삭제
+    public void deleteAutocompleteKeyword(String keyword) {
+        this.trie.remove(keyword);
+    }
+
+    public List<String> getCompanyNamesByKeyword(String keyword) {
+        Pageable limit = PageRequest.of(0,10);
+        Page<CompanyEntity> companyEntities = this.companyRepository.findByNameStartingWithIgnoreCase(keyword, limit);
+        return companyEntities.stream()
+                .map(e -> e.getName())
+                .collect(Collectors.toList());
     }
 }

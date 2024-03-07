@@ -21,3 +21,7 @@ Accept: application/json
 ### get company dividends
 GET http://localhost:8080/finance/dividend/Coca-Cola Consolidated, Inc.
 Accept: application/json
+
+### get autocomplete company list
+GET http://localhost:8080/company/autocomplete?keyword=c
+Accept: application/json

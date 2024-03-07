@@ -18,10 +18,11 @@ import java.util.List;
 public class CompanyController {
     private final CompanyService companyService;
 
-    // 배당금 검색 - 자동 완성
+    // 배당금 검색 - 자동 완성 조회
     @GetMapping("/autocomplete")
     public ResponseEntity<?> autocomplete(@RequestParam String keyword) {
-        return null;
+        var result = this.companyService.getCompanyNamesByKeyword(keyword);
+        return ResponseEntity.ok(result);
     }
 
     // 회사 리스트 조회
@@ -42,7 +43,10 @@ public class CompanyController {
         if (ObjectUtils.isEmpty(ticker)) {
             throw new RuntimeException("ticker is empty");
         }
+        // 티커로 회사명 추가
         Company company = this.companyService.save(ticker);
+        // 자동완성 키워드도 추가
+//        this.companyService.addAutocompleteKeyword(company.getName());
         return  ResponseEntity.ok(company);
     }
 
