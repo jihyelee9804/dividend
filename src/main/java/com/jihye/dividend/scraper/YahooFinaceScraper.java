@@ -1,6 +1,6 @@
 package com.jihye.dividend.scraper;
 
-import com.jihye.dividend.constants.Month;
+import com.jihye.dividend.model.constants.Month;
 import com.jihye.dividend.model.Company;
 import com.jihye.dividend.model.Dividend;
 import com.jihye.dividend.model.ScrapedResult;

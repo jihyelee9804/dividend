@@ -24,6 +24,10 @@ spring:
     host: localhost
     port: 6379
 
+  #'spring-boot-dividend-project-tutorial-jwt-secret-key'
+  jwt:
+    secret: 3ByaW5nLWJvb3QtZGl2aWRlbmQtcHJvamVjdC10dXRvcmlhbC1qd3Qtc2VjcmV0LWtleQo=
+
 schedular:
   scrap:
     yahoo:

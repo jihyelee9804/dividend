@@ -1,0 +1,4 @@
+package com.jihye.dividend.security;
+
+public class JwtAuthenticationFilter {
+}

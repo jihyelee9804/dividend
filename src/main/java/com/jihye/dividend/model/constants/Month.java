@@ -1,4 +1,4 @@
-package com.jihye.dividend.constants;
+package com.jihye.dividend.model.constants;
 
 public enum Month {
     JAN("Jan",1),
