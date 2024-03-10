@@ -1,5 +1,6 @@
 package com.jihye.dividend.service;
 
+import com.jihye.dividend.exception.impl.AlreadyExistUserException;
 import com.jihye.dividend.model.Auth;
 import com.jihye.dividend.model.MemberEntity;
 import com.jihye.dividend.persist.MemberRepository;
@@ -27,7 +28,8 @@ public class MemberService implements UserDetailsService {
     public MemberEntity register(Auth.SignUp member) {
         boolean exists = this.memberRepository.existsByUsername(member.getUsername());
         if (exists) {
-            throw new RuntimeException("이미 사용 중인 아이디 입니다");
+            // 회원가입 시 중복된 사용자인 경우 예외를 던진다.
+            throw new AlreadyExistUserException();
         }
         member.setPassword(this.passwordEncoder.encode(member.getPassword()));
         var result = this.memberRepository.save(member.toEntity());

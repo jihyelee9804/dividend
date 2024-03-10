@@ -1,11 +1,15 @@
 package com.jihye.dividend.security;
 
+import com.jihye.dividend.service.MemberService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -17,9 +21,9 @@ import java.util.List;
 public class TokenProvider {
     private static final long TOKEN_EXPIRE_TIME = 1000 * 60 * 60; // 토큰이 생성되었을 때 부터 1시간 동안 유효하다.
     private static final String KEY_ROLES = "roles";
-
+    private final MemberService memberService;
     @Value("{spring.jwt.secret}")
-    private String scretKey;
+    private String secretKey;
 
     /**
      * 토큰 생성(발급)
@@ -38,9 +42,15 @@ public class TokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now) // 토큰 생성 시간
                 .setExpiration(expiredDate) // 토큰 만료 시간
-                .signWith(SignatureAlgorithm.HS512, this.scretKey)
+                .signWith(SignatureAlgorithm.HS512, this.secretKey)
                 .compact(); // 사용할 암호화 알고리즘, 비밀키
     }
+
+    public Authentication getAuthentication(String jwt) {
+        UserDetails userDetails = this.memberService.loadUserByUsername(this.getUsername(jwt));
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
     public String getUsername(String token) {
         return this.parseClaims(token).getSubject();
     }
@@ -54,10 +64,10 @@ public class TokenProvider {
 
     private Claims parseClaims(String token) {
         try {
-            Jwts.parser().setSigningKey(this.scretKey).parseClaimsJws(token).getBody();
+            Jwts.parser().setSigningKey(this.secretKey).build().parseClaimsJws(token).getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
-
+        return null;
     }
 }

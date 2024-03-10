@@ -1,5 +1,6 @@
 package com.jihye.dividend.persist;
 
+import com.jihye.dividend.model.Company;
 import com.jihye.dividend.persist.entity.CompanyEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,4 +15,5 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
     boolean existsByTicker(String ticker);
     Optional<CompanyEntity> findByName(String name);
     Page<CompanyEntity> findByNameStartingWithIgnoreCase(String s, Pageable pageable);
+    Optional<CompanyEntity> findByTicker(String ticker);
 }

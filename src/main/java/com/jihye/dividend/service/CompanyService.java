@@ -83,4 +83,14 @@ public class CompanyService {
                 .map(e -> e.getName())
                 .collect(Collectors.toList());
     }
+
+    public String deleteCompany(String ticker) {
+        var company = this.companyRepository.findByTicker(ticker)
+                .orElseThrow(() -> new NoCompanyException());
+        this.dividendRepository.deleteAllByCompanyId(company.getId());
+        this.companyRepository.delete(company);
+
+        this.deleteAutocompleteKeyword(company.getName());
+        return company.getName();
+    }
 }

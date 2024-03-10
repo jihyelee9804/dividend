@@ -73,11 +73,7 @@ public class YahooFinaceScraper implements Scraper{
                     throw new RuntimeException("Unexpected Month enum value ->" + splits[0]);
                 }
                 // dividends 리스트에 요소 추가
-                dividends.add(Dividend.builder()
-                        .date(LocalDateTime.of(year, month, day, 0, 0))
-                        .dividend(dividend)
-                        .build()
-                );
+                dividends.add(new Dividend(LocalDateTime.of(year, month, day, 0, 0),dividend));
             }
             // 배당금 정보 리스트를 set한다.
             scrapResult.setDividendEntities(dividends);
@@ -101,10 +97,7 @@ public class YahooFinaceScraper implements Scraper{
             Element titleEle = document.getElementsByTag("h1").get(0);
             // 문자열 후처리
             String title = titleEle.text().split(" - ")[1].trim();
-            return Company.builder()
-                    .ticker(ticker)
-                    .name(title)
-                    .build();
+            return new Company(ticker,title);
         } catch (Exception e) {
             e.printStackTrace();
         }
