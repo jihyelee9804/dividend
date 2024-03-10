@@ -56,6 +56,7 @@ public class ScraperSchedular {
                         // 회사명과 날짜가 중복되지 않는 데이터면 저장한다.
                         if (!exists) {
                             this.dividendRepository.save(e);
+                            log.info("insert new dividend -> " + e.toString());
                         }
                     });
             // 연속적으로 스크래핑 대상 사이트 서버에 요청을 날리지 않도록 일시정지

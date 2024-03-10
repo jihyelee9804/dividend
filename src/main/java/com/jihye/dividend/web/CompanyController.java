@@ -65,6 +65,6 @@ public class CompanyController {
     }
 
     public void clearFinanceCache(String companyName) {
-        this.redisCacheManager.getCache(CacheKey.KEY_FINANCE).evict(companyName);
+//        this.redisCacheManager.getCache(CacheKey.KEY_FINANCE).evict(companyName);
     }
 }

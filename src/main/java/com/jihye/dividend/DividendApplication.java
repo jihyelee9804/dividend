@@ -24,7 +24,6 @@ public class DividendApplication {
 
     public static void main(String[] args) throws IOException {
         SpringApplication.run(DividendApplication.class, args);
-        System.out.println(Thread.currentThread().getName() + " ->  Main : " + LocalDateTime.now());
 //
 //        Trie tie
 //        AutoComplete autoComplete = new AutoComplete();

@@ -1,5 +1,6 @@
 package com.jihye.dividend.service;
 
+import com.jihye.dividend.exception.impl.NoCompanyException;
 import com.jihye.dividend.model.Company;
 import com.jihye.dividend.model.Dividend;
 import com.jihye.dividend.model.ScrapedResult;
