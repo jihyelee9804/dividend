@@ -24,15 +24,5 @@ public class DividendApplication {
 
     public static void main(String[] args) throws IOException {
         SpringApplication.run(DividendApplication.class, args);
-//
-//        Trie tie
-//        AutoComplete autoComplete = new AutoComplete();
-//        AutoComplete autoComplete1 = new AutoComplete();
-//
-//        autoComplete.add("hello");
-//
-//        System.out.println(autoComplete.get("hello"));
-//        System.out.println(autoComplete1.get("hello"));
-
     }
 }

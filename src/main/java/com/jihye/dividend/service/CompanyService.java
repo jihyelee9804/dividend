@@ -2,7 +2,6 @@ package com.jihye.dividend.service;
 
 import com.jihye.dividend.exception.impl.NoCompanyException;
 import com.jihye.dividend.model.Company;
-import com.jihye.dividend.model.Dividend;
 import com.jihye.dividend.model.ScrapedResult;
 import com.jihye.dividend.persist.CompanyRepository;
 import com.jihye.dividend.persist.DividendRepository;
@@ -10,12 +9,13 @@ import com.jihye.dividend.persist.entity.CompanyEntity;
 import com.jihye.dividend.persist.entity.DividendEntity;
 import com.jihye.dividend.scraper.Scraper;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.Trie;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.apache.commons.collections4.Trie;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
